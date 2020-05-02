@@ -1,0 +1,28 @@
+version: '3'
+services:
+  app:
+    build: ./front
+    ports:
+      - 8080:8080
+    volumes:
+      - ./front:/usr/src/app
+    stdin_open: true
+    tty: true
+    command: /bin/sh
+  api:
+    build:
+      context: ./api
+      dockerfile: dockerfile
+    volumes:
+      - ./api/php.ini:/usr/local/etc/php/php.ini
+      - ./api:/var/www/html
+    ports:
+      - 9050:80
+  websocket:
+    build: ./websocket
+    image: node-express-dev:1.0
+    tty: true
+    volumes:
+      - ./websocket:/app
+    ports:
+      - "4000:3000"
